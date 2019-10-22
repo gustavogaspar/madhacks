@@ -18,6 +18,8 @@ def get_cursos(tag):
     lista = json.loads('{"items":[{"key_word":"CD","Question":"SQL","Father":"CD","Sort":1},{"key_word":"CD","Question":"RP","Father":"CD","Sort":2},{"key_word":"CD","Question":"Estatistica","Father":"CD","Sort":3},{"key_word":"CD","Question":"MOD","Father":"Estatistica","Sort":4}]}')['items']
     return lista
 
+#fucao que traz as perguntas na ordem, verifica se a resposta foi sim ou nao 
+#adiciona os topicos com resposta negativa na trilha e remove os filhos desse topico
 def get_perguntas(param, lista, ordem):
     length = len(lista)
     prox = ordem + 1
