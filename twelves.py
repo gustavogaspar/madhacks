@@ -10,7 +10,7 @@ app.secret_key = os.urandom(20)
 """def get_cursos(profissao):
 
     url = "https://OIC-DIGIDEV-ladsedigdev.integration.ocp.oraclecloud.com:443/ic/api/integration/v1/flows/rest/HELLO_WORLD/1.0/names"
-    querystring = {"prodissao":profissao}
+    querystring = {"profissao":profissao}
     headers = {'Authorization': "Basic b2ljZGVtb3VzZXI6T3JhY2xlMTIzNDU2"}
     lista = json.loads(requests.request("GET", url, headers=headers, params=querystring))
     return lista
