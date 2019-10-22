@@ -5,9 +5,10 @@ import os
 import json
 
 app = Flask(__name__)
-#Cria uma chave aletória para cada sessão
+#Cria uma chave aletoria para cada sessao
 app.secret_key = os.urandom(20)
 
+#funcao que traz todos os cursos associadas a tag pesquisada
 def get_cursos(tag):
 
     """url = "https://OIC-DIGIDEV-ladsedigdev.integration.ocp.oraclecloud.com:443/ic/api/integration/v1/flows/rest/HELLO_WORLD/1.0/names"
