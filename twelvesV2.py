@@ -32,7 +32,6 @@ def get_perguntas(param, lista, pai, sort, ordem):
                 else:
                     ordem += 1
             else:
-                print('aqui2')
                 sort += 1
                 ordem = 0
     else:
