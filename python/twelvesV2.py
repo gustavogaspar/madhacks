@@ -30,6 +30,7 @@ def get_perguntas(param, lista, pai, sort, ordem):
                 sort += 1
                 ordem = 0
             if ordem == len(perguntas) - 1:
+                session['trilha'].append(perguntas[ordem]['id_question_pk'])
                 ordem = 0
                 sort += 1
             else:
