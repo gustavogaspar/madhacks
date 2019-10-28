@@ -21,34 +21,44 @@ def get_cursos(tag):
 #adiciona os topicos com resposta negativa na trilha e remove os filhos desse topico
 def get_perguntas(param, lista, pai, sort, ordem):
     perguntas = [t for t in lista if t['sort'] == sort]
-    if param != 'Sim':
-        if ordem <= len(perguntas) - 1:
-            if perguntas[ordem]['father'] == pai:
-                result = [p for p in perguntas if p['father'] == perguntas[ordem]['question']]
-                for j in result:
-                    session['trilha'].append(j['id_question_pk'])
+    if ordem <= len(perguntas) - 1:
+        if perguntas[ordem]['father'] == pai:
+            if param == 'No':
+                session['trilha'].append(param)
+                result = [p for p in perguntas if p['father'] != pai]
+                print(result)
+                if len(result) > 0: 
+                    for j in result:
+                        session['trilha'].append(j['respostas'].split(',')[-1])
                 sort += 1
-                ordem = 0
-            if ordem == len(perguntas) - 1:
-                session['trilha'].append(perguntas[ordem]['id_question_pk'])
-                ordem = 0
-                sort += 1
+                ordem = 0        
             else:
-                session['trilha'].append(perguntas[ordem]['id_question_pk'])
-                ordem += 1
+                result = [p for p in perguntas if p['father'] != pai]
+                print(result)
+                if len(result) > 0:
+                    print('aqiu')
+                    session['trilha'].append(param)
+                    ordem += 1
+                else:
+                    print('aqui')
+                    session['trilha'].append(param)
+                    ordem = 0
+                    sort += 1
         else:
-            sort += 1
-            ordem = 0
-    else:
-        if ordem <= len(perguntas) - 1:
-            if ordem == len(perguntas) - 1:
-                sort += 1
-                ordem = 0
-            else:
+            if ordem < len(perguntas) -1:
+                session['trilha'].append(param)
                 ordem += 1
-    if max(t['sort'] for t in lista) >= sort:
-        resposta = 'Você conhece ' + str([t['question'] for t in lista if t['sort'] == sort][ordem]) + '?'
-        return resposta, ordem, sort
+            else:
+                session['trilha'].append(param)
+                ordem = 0
+                sort += 1
+    if sort <= max(t['sort'] for t in lista):
+        print(sort)
+        print(ordem)
+        pergunta = [t['question'] for t in lista if t['sort'] == sort][ordem]
+        respostas = [t['respostas'] for t in lista if t['sort'] == sort][ordem]
+        retorno = {"Pergunta" : pergunta, "Respostas": respostas.split(',')}
+        return retorno, ordem, sort
     else:
         return 'Essa é sua lista ' + str(session['trilha']), 0 ,1 
 
@@ -63,8 +73,9 @@ def tag():
             session['sort'] = 1
             session['trilha'] = []
             session['ordem'] = 0
-            pergunta = str([t['question'] for t in session['lista'] if t['sort'] == session['sort'] and t['father'] == session['father']][0])
-            return 'Você Conhece ' + pergunta + '?'
+            pergunta = [t['question'] for t in session['lista'] if t['sort'] == session['sort'] and t['father'] == session['father']][0]
+            respostas = [t['respostas'] for t in session['lista'] if t['sort'] == session['sort'] and t['father'] == session['father']][0]
+            return {"Pergunta": pergunta, "Resposta": respostas.split(',')}
         else: 
             return 'Profissão não encontrada'
     else:
