@@ -8,3 +8,14 @@ build:
         code: |
           echo "python version $(python --version) running"
           echo "pip version $(pip --version) running"
+          
+push:
+  steps:
+    - internal/docker-push:
+            entrypoint: python twelvesV2.py
+            working-dir: $WERCKER_ROOT
+            tag: $WERCKER_GIT_COMMIT
+            ports: "5000"
+            username: $DOCKER_USERNAME
+            password: $OCI_AUTH_TOKEN
+            repository: $DOCKER_REGISTRY/$DOCKER_REPO
