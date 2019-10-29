@@ -23,7 +23,7 @@ push:
             
             
 deploy-to-kubernetes:
-    box: python:current-slim
+    box: python
     steps:
 
     # https://github.com/wercker/step-bash-template
