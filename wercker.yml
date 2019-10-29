@@ -19,3 +19,63 @@ push:
             username: $DOCKER_USERNAME
             password: $OCI_AUTH_TOKEN
             repository: $DOCKER_REGISTRY/$DOCKER_REPO
+            
+            
+            
+deploy-to-kubernetes:
+    box: python:current-slim
+    steps:
+
+    # https://github.com/wercker/step-bash-template
+    # This Wercker step will look for files in our repo with a .template extension.
+    # It will expand any environment variables in those files, then remove the
+    # template extension.
+    - bash-template
+
+    # The step above should leave us with a Kubernetes service and deployment yml files.
+    # We'll create a directory to move them to.
+    - script:
+        name: Prepare Kubernetes files
+        code: |
+          mkdir $WERCKER_OUTPUT_DIR/kubernetes
+          mv kubernetes*.yml $WERCKER_OUTPUT_DIR/kubernetes
+    #This step cleans up the previous secret configuration
+    - kubectl:
+        name: Delete secrets
+        server: $OKE_MASTER
+        token: $OKE_TOKEN
+        insecure-skip-tls-verify: true
+        command: delete secret wercker; echo delete registry secret
+
+    #Create a new secret referencing your ocir repository
+    - kubectl:
+        name: Create a new secret
+        server: $OKE_MASTER
+        token: $OKE_TOKEN
+        insecure-skip-tls-verify: true
+        command: create secret docker-registry wercker --docker-server=$DOCKER_REGISTRY --docker-email=nobody@noemail.com --docker-username=$DOCKER_USERNAME --docker-password='$OCI_AUTH_TOKEN'; echo create registry secret
+        
+    # `apply` is a good command to use here, as it'll create Kubernetes entities if they are missing.
+    - kubectl:
+        name: deploy to kubernetes
+        server: $OKE_MASTER
+        token: $OKE_TOKEN
+        insecure-skip-tls-verify: true
+        command: apply -f $WERCKER_OUTPUT_DIR/kubernetes/
+
+    # Tell Kubernetes that we're going to wait 60 seconds for the deploy to be successful
+    - kubectl:
+        name: set deployment timeout
+        server: $OKE_MASTER
+        token: $OKE_TOKEN
+        insecure-skip-tls-verify: true
+        command: patch deployment/madhacks -p '{"spec":{"progressDeadlineSeconds":60}}'
+
+    # Watch the Kubernetes deployment. Once the pods are considered healthy the step will exit 0
+    # If they aren't healthy within 60 seconds, it will exit with a non 0 exit code, and cause the run to fail.
+    - kubectl:
+        name: check deployment status
+        server: $OKE_MASTER
+        token: $OKE_TOKEN
+        insecure-skip-tls-verify: true
+        command: rollout status deployment/madhacks            
