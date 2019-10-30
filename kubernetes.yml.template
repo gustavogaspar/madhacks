@@ -1,0 +1,45 @@
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: madhacks
+  labels:
+    commit: ${WERCKER_GIT_COMMIT}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: madhacks
+  template:
+    metadata:
+      labels:
+        app: madhacks
+        commit: ${WERCKER_GIT_COMMIT}
+    spec:
+      containers:
+      - name: madhacks
+        image: ${DOCKER_REGISTRY}/${DOCKER_REPO}:${WERCKER_GIT_COMMIT}
+        ports:
+        - name: madhacks
+          containerPort: 5000
+          protocol: TCP
+      imagePullSecrets:
+        - name: wercker
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: madhacks
+  labels:
+    app: madhacks
+    commit: ${WERCKER_GIT_COMMIT}
+spec:
+  ports:
+  - port: 5000
+    targetPort: 6000
+  selector:
+    app: madhacks
+    commit: ${WERCKER_GIT_COMMIT}
+  type: LoadBalancer
+---
