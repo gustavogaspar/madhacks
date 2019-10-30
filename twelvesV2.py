@@ -47,7 +47,7 @@ def insert_recomendation(recomendacoes):
     headers = {'Content-Type': "application/json"}
     for data in recomendacoes:
         payload = '{"session_id":"'+request.cookies.get('session')+'", "subject": '+ str(data["course_id"]) + ', "topic_id": '+ str(data["topic_id"]) +', "course_id": '+ str(data["course_id"]) +'}'
-        var = requests.request("POST", url, data=payload, headers=headers)
+        requests.request("POST", url, data=payload, headers=headers)
 
 #fucao que traz as perguntas na ordem, verifica se a resposta foi sim ou nao 
 #adiciona os topicos com resposta negativa na trilha e remove os filhos desse topico
