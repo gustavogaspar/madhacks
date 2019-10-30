@@ -30,26 +30,46 @@ def get_recomendacao(respostas):
         for i in req:
             recomendacao.append(i)
             valorTotal+= i['price']
-
+    insert_recomendation(recomendacao)
     return recomendacao, valorTotal
+
+#Insert resposta no ADB
+def insert_questions(dados):
+    url = "https://nrlyqybsaqsrbvj-siriusatp.adb.us-ashburn-1.oraclecloudapps.com/ords/SIRIUS/madkhacks/questions"
+    headers = {'Content-Type': "application/json"}
+    for data in dados:
+        payload = '{"session_id":"'+request.cookies.get('session')+'", "question_id": '+ str(data[0]) + ', "resposta": "'+ data[1] +'"}'
+        requests.request("POST", url, data=payload, headers=headers)
+
+#Insert recomendações no ADB
+def insert_recomendation(recomendacoes):
+    url = "https://nrlyqybsaqsrbvj-siriusatp.adb.us-ashburn-1.oraclecloudapps.com/ords/SIRIUS/madkhacks/recomendacoes"
+    headers = {'Content-Type': "application/json"}
+    for data in recomendacoes:
+        payload = '{"session_id":"'+request.cookies.get('session')+'", "subject": '+ str(data["course_id"]) + ', "topic_id": '+ str(data["topic_id"]) +', "course_id": '+ str(data["course_id"]) +'}'
+        var = requests.request("POST", url, data=payload, headers=headers)
 
 #fucao que traz as perguntas na ordem, verifica se a resposta foi sim ou nao 
 #adiciona os topicos com resposta negativa na trilha e remove os filhos desse topico
 def get_perguntas(param, lista, sort, ordem):
-    now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    #now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     perguntas = [t for t in lista if t['sort'] == sort]
+    tempResp = []
     if ordem <= len(perguntas) - 1:
         if perguntas[ordem]['father'] == 0:
             if param == 'No':
-                session['trilha'].append([perguntas[ordem]['id'], param,now])
+                session['trilha'].append([perguntas[ordem]['id'], param])
+                tempResp.append([perguntas[ordem]['id'], param])
                 result = [p for p in perguntas if p['father'] != 0]
                 if len(result) > 0: 
                     for j in result:
-                        session['trilha'].append([j['id'],j['respostas'].split(',')[-1],now])
+                        session['trilha'].append([j['id'],j['respostas'].split(',')[-1]])
+                        tempResp.append([j['id'],j['respostas'].split(',')[-1]])
                 sort += 1
                 ordem = 0        
             else:
-                session['trilha'].append([perguntas[ordem]['id'], param,now])
+                session['trilha'].append([perguntas[ordem]['id'], param])
+                tempResp.append([perguntas[ordem]['id'], param])
                 result = [p for p in perguntas if p['father'] != 0]
                 if len(result) > 0:
                     ordem += 1
@@ -58,16 +78,19 @@ def get_perguntas(param, lista, sort, ordem):
                     sort += 1
         else:
             if ordem < len(perguntas) -1:
-                session['trilha'].append([perguntas[ordem]['id'], param,now])
+                session['trilha'].append([perguntas[ordem]['id'], param])
+                tempResp.append([perguntas[ordem]['id'], param])
                 ordem += 1
             else:
-                session['trilha'].append([perguntas[ordem]['id'], param,now])
+                session['trilha'].append([perguntas[ordem]['id'], param])
+                tempResp.append([perguntas[ordem]['id'], param])
                 ordem = 0
                 sort += 1
     if sort <= max(t['sort'] for t in lista):
         pergunta = [t['question'] for t in lista if t['sort'] == sort][ordem]
         respostas = [t['respostas'] for t in lista if t['sort'] == sort][ordem]
         retorno = {"Pergunta" : pergunta, "Respostas": respostas.split(',')}
+        insert_questions(tempResp)
         return retorno, ordem, sort
     else:
         recomendacao, valor = get_recomendacao(session['trilha'])
