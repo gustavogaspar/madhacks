@@ -46,7 +46,7 @@ def insert_recomendation(recomendacoes):
     url = "https://nrlyqybsaqsrbvj-siriusatp.adb.us-ashburn-1.oraclecloudapps.com/ords/SIRIUS/madkhacks/recomendacoes"
     headers = {'Content-Type': "application/json"}
     for data in recomendacoes:
-        payload = '{"session_id":"'+request.cookies.get('session')+'", "subject": '+ str(data["course_id"]) + ', "topic_id": '+ str(data["topic_id"]) +', "course_id": '+ str(data["course_id"]) +'}'
+        payload = '{"session_id":"'+request.cookies.get('session')+'", "subject": '+ str(session['tag']) + ', "topic_id": '+ str(data["topic_id"]) +', "course_id": '+ str(data["course_id"]) +'}'
         requests.request("POST", url, data=payload, headers=headers)
 
 #fucao que traz as perguntas na ordem, verifica se a resposta foi sim ou nao 
@@ -101,7 +101,8 @@ def get_perguntas(param, lista, sort, ordem):
 def tag():
     #verifica se a chamada é um GET ou um POST
     if request.method == 'GET':
-        session['lista'] = get_todas_perguntas(request.args.get('tag'))
+        session['tag'] = request.args.get('tag')
+        session['lista'] = get_todas_perguntas(session['tag'])
         if len(session['lista']) > 0:
             session['sort'] = 1
             session['trilha'] = []
