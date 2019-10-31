@@ -1,29 +1,15 @@
-box: python:2.7
 
-build:
-  steps:
-    - virtualenv:
-        name: setup virtual environment
-        install_wheel: false # Enable wheel to speed up builds (experimental)
-    - pip-install
-
-    - script:
-        name: echo python information
-        code: |
-          echo "python version $(python --version) running"
-          echo "pip version $(pip --version) running"
-
-          
 push:
-  steps:
-    - internal/docker-push:
-            entrypoint: python twelvesV2.py
-            working-dir: $WERCKER_ROOT
-            tag: $WERCKER_GIT_COMMIT
-            ports: "5000"
-            username: $DOCKER_USERNAME
-            password: $OCI_AUTH_TOKEN
-            repository: $DOCKER_REGISTRY/$DOCKER_REPO
+box:
+  id: python:3.7
+  ports:
+    - "5000"
+
+  build:
+   steps:
+     - pip-install
+     - script:
+         code: python twelvesV2.py
             
             
             
