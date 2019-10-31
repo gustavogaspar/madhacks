@@ -1,13 +1,9 @@
 box:
   id: python
-  ports:
-    - "5000"
 
 build:
   steps:
-    - virtualenv:
-        name: My virtual env
-        install_wheel: false
+
     - script:
         name: Install main requirements
         code: pip install -r requirements.txt
