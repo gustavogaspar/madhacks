@@ -3,7 +3,6 @@ from flask_session import Session
 import requests
 import os
 import json
-from datetime import datetime
 
 app = Flask(__name__)
 #Cria uma chave aletoria para cada sessao
