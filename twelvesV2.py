@@ -88,12 +88,12 @@ def get_perguntas(param, lista, sort, ordem):
     if sort <= max(t['sort'] for t in lista):
         pergunta = [t['question'] for t in lista if t['sort'] == sort][ordem]
         respostas = [t['respostas'] for t in lista if t['sort'] == sort][ordem]
-        retorno = {"Pergunta" : pergunta, "Respostas": respostas.split(',')}
+        retorno = {"Pergunta" : pergunta, "Respostas": respostas.split(','), "offset": 0}
         insert_questions(tempResp)
         return retorno, ordem, sort
     else:
         recomendacao, valor = get_recomendacao(session['trilha'])
-        return {"Recomendacao": recomendacao, "Valor Total": valor}, 0 ,1 
+        return {"Recomendacao": recomendacao, "Valor Total": valor, "offset": 1}, 0 ,1 
 
 #Cria o path relativo do endpoint
 @app.route('/tag', methods=['GET', 'POST'])
@@ -123,4 +123,4 @@ def tag():
 
 if __name__ == '__main__':
     
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0)
