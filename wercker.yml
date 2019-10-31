@@ -5,6 +5,7 @@ box:
 
 build:
   steps:
+    - virtual-env
     - pip-install
     - internal/watch:
         code: python twelvesV2.py
