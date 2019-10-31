@@ -1,11 +1,11 @@
 box:
-  id: python:3.7
+  id: python
   ports:
     - "5000"
 
 build:
   steps:
-    - virtual-env
+    - virtualenv
     - pip-install
     - internal/watch:
         code: python twelvesV2.py
