@@ -108,7 +108,7 @@ def tag():
             session['ordem'] = 0
             pergunta = [t['question'] for t in session['lista'] if t['sort'] == session['sort'] and t['father'] == 0][0]
             respostas = [t['respostas'] for t in session['lista'] if t['sort'] == session['sort'] and t['father'] == 0][0]
-            return {"Pergunta": pergunta, "Resposta": respostas.split(',')}
+            return {"Pergunta": pergunta, "Resposta": respostas.split(','), "offset": 0}
         else: 
             return 'Profissão não encontrada'
     else:
@@ -123,4 +123,4 @@ def tag():
 
 if __name__ == '__main__':
     
-    app.run(host='0.0.0.0')
+    app.run('0.0.0.0')
