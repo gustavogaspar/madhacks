@@ -108,7 +108,7 @@ def tag():
             session['ordem'] = 0
             pergunta = [t['question'] for t in session['lista'] if t['sort'] == session['sort'] and t['father'] == 0][0]
             respostas = [t['respostas'] for t in session['lista'] if t['sort'] == session['sort'] and t['father'] == 0][0]
-            return {"Pergunta": pergunta, "Resposta": respostas.split(','), "offset": 0}
+            return {"Pergunta": pergunta, "Resposta": respostas.split(','), "offset": 0, "sessionid": 'session='+str(request.cookies.get('session'))}
         else: 
             return 'Profissao nao encontrada'
     else:
