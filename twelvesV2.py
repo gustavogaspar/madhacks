@@ -6,7 +6,7 @@ import json
 
 app = Flask(__name__)
 #Cria uma chave aletoria para cada sessao
-app.secret_key = os.urandom(20)
+app.secret_key = os.urandom(12).hex()
 
 #funcao que traz todas as perguntas
 def get_todas_perguntas(tag):
@@ -37,7 +37,7 @@ def insert_questions(dados):
     url = "https://nrlyqybsaqsrbvj-siriusatp.adb.us-ashburn-1.oraclecloudapps.com/ords/SIRIUS/madkhacks/questions"
     headers = {'Content-Type': "application/json"}
     for data in dados:
-        payload = '{"session_id":"'+request.cookies.get('session')+'", "question_id": '+ str(data[0]) + ', "resposta": "'+ data[1] +'"}'
+        payload = '{"session_id":"'+session['sessionID']+'", "question_id": '+ str(data[0]) + ', "resposta": "'+ data[1] +'"}'
         requests.request("POST", url, data=payload, headers=headers)
 
 #Insert recomendações no ADB
@@ -45,13 +45,12 @@ def insert_recomendation(recomendacoes):
     url = "https://nrlyqybsaqsrbvj-siriusatp.adb.us-ashburn-1.oraclecloudapps.com/ords/SIRIUS/madkhacks/recomendacoes"
     headers = {'Content-Type': "application/json"}
     for data in recomendacoes:
-        payload = '{"session_id":"'+request.cookies.get('session')+'", "subject": '+ str(session['tag']) + ', "topic_id": '+ str(data["topic_id"]) +', "course_id": '+ str(data["course_id"]) +'}'
+        payload = '{"session_id":"'+session['sessionID']+'", "subject": '+ str(session['tag']) + ', "topic_id": '+ str(data["topic_id"]) +', "course_id": '+ str(data["course_id"]) +'}'
         requests.request("POST", url, data=payload, headers=headers)
 
 #fucao que traz as perguntas na ordem, verifica se a resposta foi sim ou nao 
 #adiciona os topicos com resposta negativa na trilha e remove os filhos desse topico
 def get_perguntas(param, lista, sort, ordem):
-    #now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     perguntas = [t for t in lista if t['sort'] == sort]
     tempResp = []
     if ordem <= len(perguntas) - 1:
@@ -103,6 +102,7 @@ def tag():
         session['tag'] = request.args.get('tag')
         session['lista'] = get_todas_perguntas(session['tag'])
         if len(session['lista']) > 0:
+            session['sessionID'] = os.urandom(20).hex()
             session['sort'] = 1
             session['trilha'] = []
             session['ordem'] = 0
