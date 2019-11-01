@@ -40,7 +40,7 @@ def insert_questions(dados):
         payload = '{"session_id":"'+session['sessionID']+'", "question_id": '+ str(data[0]) + ', "resposta": "'+ data[1] +'"}'
         requests.request("POST", url, data=payload, headers=headers)
 
-#Insert recomendações no ADB
+#Insert recomendacoes no ADB
 def insert_recomendation(recomendacoes):
     url = "https://nrlyqybsaqsrbvj-siriusatp.adb.us-ashburn-1.oraclecloudapps.com/ords/SIRIUS/madkhacks/recomendacoes"
     headers = {'Content-Type': "application/json"}
@@ -97,7 +97,7 @@ def get_perguntas(param, lista, sort, ordem):
 #Cria o path relativo do endpoint
 @app.route('/tag', methods=['GET', 'POST'])
 def tag():
-    #verifica se a chamada é um GET ou um POST
+    #verifica se a chamada e um GET ou um POST
     if request.method == 'GET':
         session['tag'] = request.args.get('tag')
         session['lista'] = get_todas_perguntas(session['tag'])
@@ -110,7 +110,7 @@ def tag():
             respostas = [t['respostas'] for t in session['lista'] if t['sort'] == session['sort'] and t['father'] == 0][0]
             return {"Pergunta": pergunta, "Resposta": respostas.split(','), "offset": 0}
         else: 
-            return 'Profissão não encontrada'
+            return 'Profissao nao encontrada'
     else:
         if session.get('lista') is not None:
             resposta = ''
@@ -118,7 +118,7 @@ def tag():
             resposta, session['ordem'], session['sort'] = get_perguntas(arg['resposta'], session['lista'], session['sort'], session['ordem'])
             return resposta
         else:
-            return 'Não Existe Nenhuma sessão'
+            return 'Nao Existe Nenhuma sessao'
 
 
 if __name__ == '__main__':
