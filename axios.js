@@ -14,7 +14,7 @@ async function makeGetRequest(code) {
 
 async function makePostRequest(resposta, session) {
 
-    const dados = {
+    let dados = {
       'Content-Type': 'application/json',
       'Cookie': session
     }
