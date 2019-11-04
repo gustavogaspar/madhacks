@@ -1,6 +1,6 @@
 from flask import Flask, session, request, jsonify
 from flask_session import Session
-from flask_cors import CORS
+#from flask_cors import CORS
 import requests
 import os
 import json
@@ -8,7 +8,7 @@ import json
 app = Flask(__name__)
 #Cria uma chave aletoria para cada sessao
 app.secret_key = os.urandom(12).hex()
-CORS(app)
+#CORS(app)
 
 #funcao que traz todas as perguntas
 def get_todas_perguntas(tag):
@@ -110,8 +110,9 @@ def tag():
             session['ordem'] = 0
             pergunta = [t['question'] for t in session['lista'] if t['sort'] == session['sort'] and t['father'] == 0][0]
             respostas = [t['respostas'] for t in session['lista'] if t['sort'] == session['sort'] and t['father'] == 0][0]
-            responses = jsonify({"Pergunta": pergunta, "Resposta": respostas.split(','), "offset": 0, "sessionid": 'session='+str(request.cookies.get('session'))})
-            responses.headers.add("Access-Control-Allow-Origin", "*")
+            reponses = {"Pergunta": pergunta, "Resposta": respostas.split(','), "offset": 0, "sessionid": 'session='+str(request.cookies.get('session'))}
+            #responses = jsonify()
+            #responses.headers.add("Access-Control-Allow-Origin", "*")
             return responses
         else: 
             return 'Profissao nao encontrada'
@@ -120,8 +121,8 @@ def tag():
             resposta = ''
             arg = request.get_json()
             resposta, session['ordem'], session['sort'] = get_perguntas(arg['resposta'], session['lista'], session['sort'], session['ordem'])
-            resposta = jsonify(resposta)
-            resposta.headers.add("Access-Control-Allow-Origin", "*")
+            #resposta = jsonify(resposta)
+            #resposta.headers.add("Access-Control-Allow-Origin", "*")
             return resposta
         else:
             return 'Nao Existe Nenhuma sessao'
@@ -129,4 +130,4 @@ def tag():
 
 if __name__ == '__main__':
     
-    app.run('0.0.0.0')
+    app.run()
