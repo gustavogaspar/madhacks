@@ -8,11 +8,12 @@ async function makeGetRequest(code) {
   let data = res.data;
   let headers = res.headers['set-cookie'][0];
   let cookie = headers.split(";")[0];
+  data.sessionid = cookie;
   console.log(data)
   return data;
 }
 
-makeGetRequest(6)
+//makeGetRequest(6)
 
 async function makePostRequest(resposta, session) {
 
@@ -21,11 +22,12 @@ async function makePostRequest(resposta, session) {
       'Cookie': session
     }
     params = {resposta: resposta}
+    console.log(dados)
 
-    let res = await axios.post('http://192.168.56.1:5000/tag', params, {headers: dados});    
+    let res = await axios.post('http://132.145.163.158:5000/tag', params, {headers: dados});    
     let pergunta = res.data;
-
+    console.log(pergunta)
     return pergunta;
 }
 
- //makePostRequest('Python', 'session=.eJyVVFtv2jAU_itnfs4QkHJ9mVQxaZXWbZr6Mq19MMlJclTHTm0DRRX_fceGUqBBrFIeopzLd_EXvwhFzksx_fsiCukrtGLaTQTlYjpKxNMCnSejxVTMDKzNAh61WQG3QWNNaWVdky5BSV0uZIkO5qjM6otIhEXXGF7sePR38sNoTH6tfcWrEuGM9WLa2yTvIMdtkJVcYsRVmJcIpoAcXWap8cQFxvCsgDIHUudAukCL2pNUB6VTRpEP_NRqfWags6u2I3WSa-OrvZJ-i5LJkZJvQULQgku0IJtGEeaQSy_ZR2xkaAOPWaUpTIE3gM-NMhajqNjD73GgMBZqk6Ni5091_UHHXu-JpS3Eet0jZjceyIGiR4ynGhFcRsEQ5x04uU5ioQ5cnhZSkV-Dp3orxzXI9DKFUocchOlt-xy9Z6UUtn8CPsiYm7h93_2m94KMqzYZvbPpvJVZRRrhO0p7AhSFXkAbHKIFmAjXP4K7F7MghZ0LYjWuwJDq3Av4DHf84WtmtKnZwA4cEqt3xNQrsdcgkIZrKiHuRL0ka3TNJ3DJl3am6VljZojN3pUP7U53u6-Odt9VbAA_K24KQQ2ZRRsDlVOx_a2gsKYONf4DLF8R4d4o0DneINWxPagd1nOF_5vuQVssBu_Vr7br7_DZwy19LHrDzUMijM2xjhBuy_xmxp3DeTFOx4VMi95kMpH5KCuywTBPR91JP-1maT7EXq8_7r9deInwsuTJ8MlbUlW4dh82_wC1FtwQ.XbuoiA.Sz5XQNUHcDJxm1FG6ZttUB9CFmM');
+ makePostRequest('Yes', 'session=.eJx9ksFOwzAQRH_F8tmHJi1JyQVBy6ECAYJKCCEOjrNprDreknUoVdV_ZxMEVavCKdJmPPM83q10loKW2etWljpU0MhsoKQtZJYo-d4CBYteZnKKYoOtqPQHCO03grQDEvC5gsaCN3AhlWyAVshuxPoXIHWHPCRsgsyindoHRN8B0WHCc2VNJbAULBIlOodr6xeCltY5EsV3_tLj-jhqgnXdemt0ZySeer26gwUGezC6wlCpGTv5IG7Y5xcuPgWXnrp-rSlA0xMGXFlDIocO9BjpkpZizqJH0E5MWgpY87EHbT2pWy4cfHe1Ofain_9_Aw5PAY4PAC9zbMNhdfTT3bpvtti_4DHuNX9zXoRKTBoobG6dDRs186Vr-W071Psu-58KR7s3JbEpoO73h4CIuWZTNjdFGiVREpv8LB0kcWyis_I8Kkd5ypN4qMej1EA8MvtdUTLoBZ9MeBQa66puP992X0B95I4.XcCqwQ.WLQ1XCDO97JtOe1-U3vMxpTuGdQ');
