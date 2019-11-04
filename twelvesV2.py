@@ -1,10 +1,12 @@
 from flask import Flask, session, request
 from flask_session import Session
+from flask_cors import CORS
 import requests
 import os
 import json
 
 app = Flask(__name__)
+CORS(app)
 #Cria uma chave aletoria para cada sessao
 app.secret_key = os.urandom(12).hex()
 
