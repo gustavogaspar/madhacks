@@ -6,9 +6,9 @@ import os
 import json
 
 app = Flask(__name__)
-CORS(app)
 #Cria uma chave aletoria para cada sessao
 app.secret_key = os.urandom(12).hex()
+CORS(app)
 
 #funcao que traz todas as perguntas
 def get_todas_perguntas(tag):
@@ -125,4 +125,4 @@ def tag():
 
 if __name__ == '__main__':
     
-    app.run('0.0.0.0')
+    app.run()
