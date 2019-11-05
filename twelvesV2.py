@@ -8,7 +8,7 @@ import json
 app = Flask(__name__)
 #Cria uma chave aletoria para cada sessao
 app.secret_key = os.urandom(12).hex()
-CORS(app)
+CORS(app,supports_credentials=True)
 
 #funcao que traz todas as perguntas
 def get_todas_perguntas(tag):
@@ -113,9 +113,6 @@ def tag():
             responses = {"Pergunta": pergunta, "Resposta": respostas.split(','), "offset": 0, "sessionid": 'session='+str(request.cookies.get('session'))}
             responses = jsonify(responses)
             responses.headers.add("Access-Control-Allow-Credentials", "true")
-            #responses.headers.add("Access-Control-Allow-Headers", "*")
-            #responses.headers.add("Access-Control-Allow-Methods", "*")
-            #responses.headers.add("Set-Cookie","*")
             return responses
         else: 
             return 'Profissao nao encontrada'
