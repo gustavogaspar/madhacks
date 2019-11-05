@@ -111,8 +111,8 @@ def tag():
             pergunta = [t['question'] for t in session['lista'] if t['sort'] == session['sort'] and t['father'] == 0][0]
             respostas = [t['respostas'] for t in session['lista'] if t['sort'] == session['sort'] and t['father'] == 0][0]
             responses = {"Pergunta": pergunta, "Resposta": respostas.split(','), "offset": 0, "sessionid": 'session='+str(request.cookies.get('session'))}
-            #responses = jsonify(responses)
-            #responses.headers.add("Access-Control-Allow-Origin", "*")
+            responses = jsonify(responses)
+            responses.headers.add("Access-Control-Allow-Credentials", "true")
             #responses.headers.add("Access-Control-Allow-Headers", "*")
             #responses.headers.add("Access-Control-Allow-Methods", "*")
             #responses.headers.add("Set-Cookie","*")
@@ -124,8 +124,8 @@ def tag():
             resposta = ''
             arg = request.get_json()
             resposta, session['ordem'], session['sort'] = get_perguntas(arg['resposta'], session['lista'], session['sort'], session['ordem'])
-            #resposta = jsonify(resposta)
-            #resposta.headers.add("Access-Control-Allow-Origin", "*")
+            resposta = jsonify(resposta)
+            resposta.headers.add("Access-Control-Allow-Credentials", "true")
             #resposta.headers.add("Access-Control-Allow-Headers", "*")
             #resposta.headers.add("Access-Control-Allow-Methods", "*")
             #resposta.headers.add("Set-Cookie","*")
