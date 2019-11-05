@@ -4,11 +4,12 @@ from flask_cors import CORS
 import requests
 import os
 import json
+import flask_cors
 
 app = Flask(__name__)
 #Cria uma chave aletoria para cada sessao
 app.secret_key = os.urandom(12).hex()
-CORS(app,supports_credentials=True)
+CORS(app,allow_headers=['Cookie'])
 
 #funcao que traz todas as perguntas
 def get_todas_perguntas(tag):
@@ -123,9 +124,6 @@ def tag():
             resposta, session['ordem'], session['sort'] = get_perguntas(arg['resposta'], session['lista'], session['sort'], session['ordem'])
             resposta = jsonify(resposta)
             resposta.headers.add("Access-Control-Allow-Credentials", "true")
-            #resposta.headers.add("Access-Control-Allow-Headers", "*")
-            #resposta.headers.add("Access-Control-Allow-Methods", "*")
-            #resposta.headers.add("Set-Cookie","*")
             return resposta
         else:
             return 'Nao Existe Nenhuma sessao'
