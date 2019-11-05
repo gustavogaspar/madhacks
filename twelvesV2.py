@@ -9,7 +9,7 @@ import flask_cors
 app = Flask(__name__)
 #Cria uma chave aletoria para cada sessao
 app.secret_key = os.urandom(12).hex()
-CORS(app,allow_headers=['Cookie', 'Content-Type', 'Access-Control-Allow-Credentials', 'Set-Cookie'],supports_credentials=True)
+CORS(app,allow_headers=['Cookie', 'Content-Type', 'Access-Control-Allow-Credentials', 'Set-Cookie'])
 
 #funcao que traz todas as perguntas
 def get_todas_perguntas(tag):
