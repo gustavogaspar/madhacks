@@ -115,6 +115,7 @@ def tag():
             responses.headers.add("Access-Control-Allow-Origin", "*")
             responses.headers.add("Access-Control-Allow-Headers", "*")
             responses.headers.add("Access-Control-Allow-Methods", "*")
+            responses.headers.add("Set-Cookie","*")
             return responses
         else: 
             return 'Profissao nao encontrada'
@@ -127,6 +128,7 @@ def tag():
             resposta.headers.add("Access-Control-Allow-Origin", "*")
             resposta.headers.add("Access-Control-Allow-Headers", "*")
             resposta.headers.add("Access-Control-Allow-Methods", "*")
+            resposta.headers.add("Set-Cookie","*")
             return resposta
         else:
             return 'Nao Existe Nenhuma sessao'
