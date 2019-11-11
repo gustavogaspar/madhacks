@@ -11,9 +11,17 @@ app = Flask(__name__)
 app.secret_key = os.urandom(12).hex()
 CORS(app,allow_headers=['Cookie', 'Content-Type', 'Access-Control-Allow-Credentials', 'Set-Cookie'], resources=r'/*')
 
+def is_number(s):
+    try:
+        complex(s) # for int, long, float and complex
+    except ValueError:
+        return False
+    return True
+
 #funcao que traz todas as perguntas
 def get_todas_perguntas(tag):
-
+    if is_number(tag) == False:
+        tag = ''
     url = "https://nrlyqybsaqsrbvj-siriusatp.adb.us-ashburn-1.oraclecloudapps.com/ords/SIRIUS/madkhacks/questions"
     querystring = {"KEYWORD":tag}
     response = requests.request("GET", url, params=querystring)
@@ -116,7 +124,8 @@ def tag():
             responses.headers.add("Access-Control-Allow-Credentials", "true")
             return responses
         else: 
-            return 'Profissao nao encontrada'
+            responses = jsonify({"Pergunta": "Ainda estou aprendendo sobre o assunto", "Resposta": [], "offset": 0, "sessionid": 'session='+str(request.cookies.get('session'))})
+            return responses
     else:
         if session.get('lista') is not None:
             resposta = ''
@@ -133,4 +142,4 @@ def tag():
 
 if __name__ == '__main__':
     
-    app.run('0.0.0.0')
+    app.run()
