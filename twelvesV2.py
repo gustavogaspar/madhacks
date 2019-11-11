@@ -124,6 +124,8 @@ def tag():
             resposta, session['ordem'], session['sort'] = get_perguntas(arg['resposta'], session['lista'], session['sort'], session['ordem'])
             resposta = jsonify(resposta)
             resposta.headers.add("Access-Control-Allow-Credentials", "true")
+            resposta.headers.add("Access-Control-Allow-Origin", "*")
+            resposta.headers.add("Access-Control-Allow-Origin", "*")
             return resposta
         else:
             return 'Nao Existe Nenhuma sessao'
