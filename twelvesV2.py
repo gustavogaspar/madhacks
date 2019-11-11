@@ -124,7 +124,7 @@ def tag():
             responses.headers.add("Access-Control-Allow-Credentials", "true")
             return responses
         else: 
-            responses = jsonify({"Pergunta": "Ainda estou aprendendo sobre o assunto", "Resposta": [], "offset": 0, "sessionid": 'session='+str(request.cookies.get('session'))})
+            responses = jsonify({"Pergunta": "Sorry, but I'm still learning about this subject", "Resposta": [], "offset": 0, "sessionid": 'session='+str(request.cookies.get('session'))})
             return responses
     else:
         if session.get('lista') is not None:
