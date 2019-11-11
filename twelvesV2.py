@@ -22,7 +22,7 @@ def is_number(s):
 def get_todas_perguntas(tag):
     if is_number(tag) == False:
         tag = ''
-    url = "https://nrlyqybsaqsrbvj-siriusatp.adb.us-ashburn-1.oraclecloudapps.com/ords/SIRIUS/madkhacks/questions"
+    url = "https://r9tdk8a7j3gfkze-siriusatpdb.adb.us-phoenix-1.oraclecloudapps.com/ords/sirius/madhacks/questions"
     querystring = {"KEYWORD":tag}
     response = requests.request("GET", url, params=querystring)
     lista = json.loads(response.text)['items']
@@ -33,7 +33,7 @@ def get_recomendacao(respostas):
 
     recomendacao = []
     valorTotal = 0
-    url = "https://nrlyqybsaqsrbvj-siriusatp.adb.us-ashburn-1.oraclecloudapps.com/ords/SIRIUS/madkhacks/recomendacoes"
+    url = "https://r9tdk8a7j3gfkze-siriusatpdb.adb.us-phoenix-1.oraclecloudapps.com/ords/sirius/madhacks/recomendacoes"
     for f in respostas:
         querystring = {"id":f[0], "resposta":f[1]}
         req = json.loads(requests.request("GET", url, params=querystring).text)['items']
@@ -45,7 +45,7 @@ def get_recomendacao(respostas):
 
 #Insert resposta no ADB
 def insert_questions(dados):
-    url = "https://nrlyqybsaqsrbvj-siriusatp.adb.us-ashburn-1.oraclecloudapps.com/ords/SIRIUS/madkhacks/questions"
+    url = "https://r9tdk8a7j3gfkze-siriusatpdb.adb.us-phoenix-1.oraclecloudapps.com/ords/sirius/madhacks/questions"
     headers = {'Content-Type': "application/json"}
     for data in dados:
         payload = '{"session_id":"'+session['sessionID']+'", "question_id": '+ str(data[0]) + ', "resposta": "'+ data[1] +'"}'
@@ -53,7 +53,7 @@ def insert_questions(dados):
 
 #Insert recomendacoes no ADB
 def insert_recomendation(recomendacoes):
-    url = "https://nrlyqybsaqsrbvj-siriusatp.adb.us-ashburn-1.oraclecloudapps.com/ords/SIRIUS/madkhacks/recomendacoes"
+    url = "https://r9tdk8a7j3gfkze-siriusatpdb.adb.us-phoenix-1.oraclecloudapps.com/ords/sirius/madhacks/recomendacoes"
     headers = {'Content-Type': "application/json"}
     for data in recomendacoes:
         payload = '{"session_id":"'+session['sessionID']+'", "subject": '+ str(session['tag']) + ', "topic_id": '+ str(data["topic_id"]) +', "course_id": '+ str(data["course_id"]) +'}'
@@ -133,7 +133,6 @@ def tag():
             resposta, session['ordem'], session['sort'] = get_perguntas(arg['resposta'], session['lista'], session['sort'], session['ordem'])
             resposta = jsonify(resposta)
             resposta.headers.add("Access-Control-Allow-Credentials", "true")
-            resposta.headers.add("Access-Control-Allow-Origin", "*")
             resposta.headers.add("Access-Control-Allow-Origin", "*")
             return resposta
         else:

@@ -3,7 +3,7 @@ const axios = require('axios');
 async function makeGetRequest(code) {
 
   let url= 'http://132.145.163.158:5000/tag?tag='+ code;
-  let res = await axios.get(url);
+  let res = await axios.get(url, {withCredentials: true});
 
   let data = res.data;
   let headers = res.headers['set-cookie'][0];
