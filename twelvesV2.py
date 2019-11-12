@@ -137,6 +137,7 @@ def tag():
             resposta.headers.add("Access-Control-Allow-Origin", "http://www.twelves.site")
             return resposta
         else:
+            print(str(request.cookies.get('session')))
             return 'Nao Existe Nenhuma sessao'
 
 
