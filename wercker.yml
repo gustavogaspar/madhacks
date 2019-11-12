@@ -6,7 +6,9 @@ build:
 
     - script:
         name: Install main requirements
-        code: pip3 install flask flask_session request flask_cors
+        code: |
+              apt-get install python3-pip
+              pip3 install flask flask_session request flask_cors
 
 
 push:
