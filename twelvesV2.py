@@ -122,7 +122,7 @@ def tag():
             responses = {"Pergunta": pergunta, "Resposta": respostas.split(','), "offset": 0, "sessionid": 'session='+str(request.cookies.get('session'))}
             responses = jsonify(responses)
             responses.headers.add("Access-Control-Allow-Credentials", "true")
-            responses.headers.add("Access-Control-Allow-Origin", "*")
+            responses.headers.add("Access-Control-Allow-Origin", "http://www.twelves.site/sirius")
             return responses
         else: 
             responses = jsonify({"Pergunta": "Sorry, but I'm still learning about this subject", "Resposta": [], "offset": 0, "sessionid": 'session='+str(request.cookies.get('session'))})
@@ -134,7 +134,7 @@ def tag():
             resposta, session['ordem'], session['sort'] = get_perguntas(arg['resposta'], session['lista'], session['sort'], session['ordem'])
             resposta = jsonify(resposta)
             resposta.headers.add("Access-Control-Allow-Credentials", "true")
-            resposta.headers.add("Access-Control-Allow-Origin", "*")
+            resposta.headers.add("Access-Control-Allow-Origin", "http://www.twelves.site/sirius")
             return resposta
         else:
             return 'Nao Existe Nenhuma sessao'
