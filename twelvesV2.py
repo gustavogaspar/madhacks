@@ -9,7 +9,7 @@ import flask_cors
 app = Flask(__name__)
 #Cria uma chave aletoria para cada sessao
 app.secret_key = os.urandom(12).hex()
-#CORS(app,allow_headers=['Cookie', 'Content-Type', 'Access-Control-Allow-Credentials', 'Set-Cookie'], resources=r'/*')
+CORS(app,allow_headers=['Cookie', 'Content-Type', 'Access-Control-Allow-Credentials', 'Set-Cookie'], resources=r'/*',  supports_credentials=True)
 
 def is_number(s):
     try:
