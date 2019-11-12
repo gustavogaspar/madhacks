@@ -9,7 +9,7 @@ import flask_cors
 app = Flask(__name__)
 #Cria uma chave aletoria para cada sessao
 app.secret_key = os.urandom(12).hex()
-CORS(app,allow_headers=['Cookie', 'Content-Type', 'Access-Control-Allow-Credentials', 'Set-Cookie'], resources=r'/*')
+#CORS(app,allow_headers=['Cookie', 'Content-Type', 'Access-Control-Allow-Credentials', 'Set-Cookie'], resources=r'/*')
 
 def is_number(s):
     try:
@@ -122,6 +122,7 @@ def tag():
             responses = {"Pergunta": pergunta, "Resposta": respostas.split(','), "offset": 0, "sessionid": 'session='+str(request.cookies.get('session'))}
             responses = jsonify(responses)
             responses.headers.add("Access-Control-Allow-Credentials", "true")
+            resposta.headers.add("Access-Control-Allow-Origin", "*")
             return responses
         else: 
             responses = jsonify({"Pergunta": "Sorry, but I'm still learning about this subject", "Resposta": [], "offset": 0, "sessionid": 'session='+str(request.cookies.get('session'))})
