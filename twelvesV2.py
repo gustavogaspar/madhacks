@@ -132,9 +132,14 @@ def tag():
             resposta = ''
             arg = request.get_json()
             resposta, session['ordem'], session['sort'] = get_perguntas(arg['resposta'], session['lista'], session['sort'], session['ordem'])
+            offset = resposta['offset']
             resposta = jsonify(resposta)
             resposta.headers.add("Access-Control-Allow-Credentials", "true")
             resposta.headers.add("Access-Control-Allow-Origin", "http://www.twelves.site")
+            
+            if offset == 1:
+                session.clear()
+
             return resposta
         else:
             print(str(request.cookies.get('session')))
